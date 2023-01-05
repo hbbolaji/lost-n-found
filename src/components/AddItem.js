@@ -32,7 +32,10 @@ const AddItem = ({ email, close }) => {
     close();
   };
   return (
-    <div className="w-full">
+    <div className="w-full space-y-6">
+      <h1 className="text-xl text-center font-semibold">
+        Add Missing Items here
+      </h1>
       <Formik
         initialValues={initialValue}
         validationSchema={registerSchema}

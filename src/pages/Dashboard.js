@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import AddItem from "../components/AddItem";
 import MissingList from "../components/MissingList";
 import { useMissing } from "../context/MissingContext";
+import AddFeedback from "../components/AddFeedback";
 
 const Dashboard = () => {
   const { user, logout, checkAdmin, loggedInUser } = useAuth();
+  const [toggle, setToggle] = useState("");
   const { getDashItems, dashItems } = useMissing();
   const [search, setSearch] = useState("");
   const [show, setShow] = useState(false);
@@ -52,6 +54,16 @@ const Dashboard = () => {
           <button
             className="px-6 py-2 bg-white text-emerald-600 rounded-md"
             onClick={() => {
+              setToggle("feed");
+              setShow(!show);
+            }}
+          >
+            {show ? "Cancel" : "Feedback"}
+          </button>
+          <button
+            className="px-6 py-2 bg-white text-emerald-600 rounded-md"
+            onClick={() => {
+              setToggle("add");
               setShow(!show);
             }}
           >
@@ -80,10 +92,10 @@ const Dashboard = () => {
         </div>
         {show ? (
           <div className="w-1/4 p-8 space-y-6">
-            <h1 className="text-xl text-center font-semibold">
-              Add Missing Items here
-            </h1>
-            <AddItem email={user.email} close={() => setShow(false)} />
+            {toggle === "add" && (
+              <AddItem email={user.email} close={() => setShow(false)} />
+            )}
+            {toggle === "feed" && <AddFeedback user={loggedInUser} />}
           </div>
         ) : null}
       </div>

@@ -16,6 +16,7 @@ export const useMissing = () => useContext(MissingContext);
 
 const MissingProvider = ({ children }) => {
   const [progress, setProgress] = useState(0);
+  const [feedbacks, setFeedbacks] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
   const [items, setItems] = useState([]);
   const [dashItems, setDashItems] = useState([]);
@@ -84,18 +85,40 @@ const MissingProvider = ({ children }) => {
     );
   };
 
+  const createFeedback = async (item) => {
+    try {
+      await setDoc(doc(db, "feedbacks", item.id), item);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getFeedbacks = () => {
+    const q = query(collection(db, "feedbacks"));
+    onSnapshot(q, (querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data() });
+      });
+      setFeedbacks(data);
+    });
+  };
+
   return (
     <MissingContext.Provider
       value={{
         items,
         dashItems,
         imageUrl,
+        feedbacks,
         getMissing,
         addMissingItem,
         uploadCoverImage,
         progress,
         getDashItems,
         setAsFound,
+        createFeedback,
+        getFeedbacks,
       }}
     >
       {children}

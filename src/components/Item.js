@@ -4,12 +4,12 @@ import { useMissing } from "../context/MissingContext";
 const Item = (item) => {
   const { setAsFound } = useMissing();
   return (
-    <div className="shadow-lg rounded" w-full>
+    <div className="shadow-lg rounded">
       <div className="h-72 relative">
         <img
           src={item.item.fileUrl}
           className="w-full h-72 rounded object-cover"
-          alt={item.name}
+          alt={item.item.name}
         />
         <div className="absolute top-0 p-4">
           {item.item.found ? (
