@@ -1,25 +1,48 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { auth } from "../firebase.config";
+import { auth, db } from "../firebase.config";
+import { doc, setDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        });
+      } else setUser(null);
+      setLoading(false);
+    });
+  }, []);
   const [user, setUser] = useState(null);
-  const signupWithEmail = async (email, password) => {
+  const signupWithEmail = async (payload) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
-        email,
-        password
+        payload.email,
+        payload.password
       );
       const user = userCredential.user;
+      console.log(user);
       setUser(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const createUser = async (item) => {
+    try {
+      await setDoc(doc(db, "users", item.id), item);
     } catch (error) {
       console.log(error);
     }
@@ -48,9 +71,9 @@ const AuthProvider = ({ children }) => {
   };
   return (
     <AuthContext.Provider
-      value={{ user, signupWithEmail, signinWithEmail, logout }}
+      value={{ user, signupWithEmail, signinWithEmail, logout, createUser }}
     >
-      {children}
+      {loading ? null : children}
     </AuthContext.Provider>
   );
 };

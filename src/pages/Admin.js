@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import AddItem from "../components/AddItem";
-import MissingList from "../components/MissingList";
 import { useMissing } from "../context/MissingContext";
+import MissingList from "../components/MissingList";
 
-const Dashboard = () => {
-  const { user, logout } = useAuth();
-  const { getDashItems, dashItems } = useMissing();
-  const [search, setSearch] = useState("");
+const Admin = () => {
   const [show, setShow] = useState(false);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const { items, getMissing } = useMissing();
+  const { logout, user } = useAuth();
 
   useEffect(() => {
-    user && getDashItems(user.email);
+    getMissing();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, []);
   return (
     <div>
       <div className="bg-emerald-600 p-6 text-white flex justify-between items-center">
-        <p className="text-lg">{user ? user.email : "User"}</p>
-        {/* <p className="text-2xl uppercase font-semibold">{user?.email}</p> */}
+        <p className="text-2xl uppercase font-semibold">Admin</p>
         <div>
           <input
             className="p-3 rounded w-96 outline-none text-emerald-800"
@@ -51,11 +50,15 @@ const Dashboard = () => {
       </div>
       <div className="flex">
         <div className="flex-1">
+          <h1 className="px-28 text-lg font-semibold my-4">
+            Results for Missing Items: 4 items
+          </h1>
+          {/* <MissingList items={items} /> */}
           <MissingList
             items={
               search === ""
-                ? dashItems
-                : dashItems.filter((item) => item.name === search) || dashItems
+                ? items
+                : items.filter((item) => item.name === search) || items
             }
           />
         </div>
@@ -72,5 +75,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
-// 544498023
+export default Admin;

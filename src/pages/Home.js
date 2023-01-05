@@ -5,7 +5,12 @@ import Signin from "../components/Signin";
 const Home = () => {
   const [show, setShow] = useState(false);
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex flex-col space-y-8 justify-center items-center">
+      <div>
+        <h1 className="text-center font-semibold text-emerald-600 text-2xl uppercase">
+          Lost and Found System
+        </h1>
+      </div>
       <div className="w-1/2">
         {show ? (
           <div className="shadow rounded p-16 space-y-8">
@@ -40,6 +45,11 @@ const Home = () => {
             </p>
           </div>
         )}
+      </div>
+      <div>
+        <p>
+          For any Enquiry, Contact us @ imtinan2000@gmail.com or +60193405311
+        </p>
       </div>
     </div>
   );
