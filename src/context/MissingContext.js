@@ -52,6 +52,7 @@ const MissingProvider = ({ children }) => {
       console.log(error);
     }
   };
+
   const setAsFound = async (missing) => {
     try {
       const submissionRef = doc(db, "missings", missing.id);

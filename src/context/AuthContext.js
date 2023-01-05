@@ -6,13 +6,24 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth, db } from "../firebase.config";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
+  const [loggedInUser, setLoggedInUser] = useState({});
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -61,6 +72,17 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const checkAdmin = async (email) => {
+    const q = query(collection(db, "users"), where("email", "==", email));
+    onSnapshot(q, (querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data() });
+      });
+      setLoggedInUser(data[0]);
+    });
+  };
+
   const logout = async () => {
     try {
       signOut(auth);
@@ -69,9 +91,46 @@ const AuthProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  const getUsers = () => {
+    const q = query(collection(db, "users"));
+    onSnapshot(q, (querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data() });
+      });
+      setUsers(data);
+    });
+  };
+
+  const updateUser = async (user) => {
+    try {
+      const studentRef = doc(db, "users", user.id);
+      await updateDoc(studentRef, user);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const deleteUser = async (user) => {
+    await deleteDoc(doc(db, "users", user.id));
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, signupWithEmail, signinWithEmail, logout, createUser }}
+      value={{
+        users,
+        loggedInUser,
+        user,
+        signupWithEmail,
+        signinWithEmail,
+        logout,
+        createUser,
+        checkAdmin,
+        getUsers,
+        deleteUser,
+        updateUser,
+      }}
     >
       {loading ? null : children}
     </AuthContext.Provider>

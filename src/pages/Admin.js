@@ -32,6 +32,14 @@ const Admin = () => {
           <button
             className="px-6 py-2 bg-white text-emerald-600 rounded-md"
             onClick={() => {
+              navigate("/dashboard/admin/users", { replace: true });
+            }}
+          >
+            Users
+          </button>
+          <button
+            className="px-6 py-2 bg-white text-emerald-600 rounded-md"
+            onClick={() => {
               setShow(!show);
             }}
           >

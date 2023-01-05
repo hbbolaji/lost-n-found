@@ -6,20 +6,30 @@ import MissingList from "../components/MissingList";
 import { useMissing } from "../context/MissingContext";
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, checkAdmin, loggedInUser } = useAuth();
   const { getDashItems, dashItems } = useMissing();
   const [search, setSearch] = useState("");
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (user) {
+      checkAdmin(user.email);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     user && getDashItems(user.email);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
   return (
     <div>
       <div className="bg-emerald-600 p-6 text-white flex justify-between items-center">
-        <p className="text-lg">{user ? user.email : "User"}</p>
+        <p className="text-lg">
+          Welcome, {user ? loggedInUser.fullName : "User"}
+        </p>
         {/* <p className="text-2xl uppercase font-semibold">{user?.email}</p> */}
         <div>
           <input
@@ -30,6 +40,14 @@ const Dashboard = () => {
           />
         </div>
         <div className="space-x-8">
+          <button
+            className="px-6 py-2 bg-white text-emerald-600 rounded-md"
+            onClick={() => {
+              navigate("/dashboard/profile");
+            }}
+          >
+            Profile
+          </button>
           <button
             className="px-6 py-2 bg-white text-emerald-600 rounded-md"
             onClick={() => {

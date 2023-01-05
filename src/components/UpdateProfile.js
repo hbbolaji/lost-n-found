@@ -1,54 +1,53 @@
 import { Form, Formik } from "formik";
 import React from "react";
-import * as yup from "yup";
 import TextInput from "./TextInput";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const UpdateProfile = ({ user }) => {
   const navigate = useNavigate();
-  const { signinWithEmail } = useAuth();
+  const { updateUser } = useAuth();
   const initialValue = {
-    email: "",
-    password: "",
+    fullName: user.fullName || "",
+    phone: user.phone || "",
   };
   const submitHandler = (values) => {
-    signinWithEmail(values.email, values.password);
-    if (values.email === "admin@admin.com") {
-      navigate("/dashboard/admin", { replace: true });
-    } else {
-      navigate("/dashboard");
-    }
+    updateUser({ fullName: values.fullName, phone: values.phone, id: user.id });
+    navigate("/dashboard");
   };
   return (
     <div className="w-full">
       <Formik
         initialValues={initialValue}
-        validationSchema={registerSchema}
         onSubmit={(values) => submitHandler(values)}
       >
         {(formik) => (
           <Form className="space-y-6">
             <TextInput
-              label="Email"
-              placeholder="Enter your email"
-              value={formik.email}
-              name="email"
+              label="Full Name"
+              placeholder="Enter your full name"
+              value={formik.fullName}
+              name="fullName"
             />
             <TextInput
-              label="Password"
+              label="Phone"
               placeholder="Enter your password"
-              value={formik.password}
-              name="password"
-              type="password"
+              value={formik.phone}
+              name="phone"
             />
-            <div>
+            <div className="space-x-4">
               <button
                 className="text-lg px-6 py-3 bg-emerald-600 rounded-md text-white"
                 type="submit"
               >
-                Sign In
+                Update Profile
               </button>
+              {/* <button
+                className="text-lg px-6 py-3 border border-emerald-600 text-emerald-600 rounded-md text-white"
+                onClick={navigate("/dashboard")}
+              >
+                Cancel
+              </button> */}
             </div>
           </Form>
         )}
@@ -57,9 +56,4 @@ const Signup = () => {
   );
 };
 
-const registerSchema = yup.object().shape({
-  email: yup.string().required("Email field is required"),
-  password: yup.string().required("Password is requried"),
-});
-
-export default Signup;
+export default UpdateProfile;
