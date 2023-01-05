@@ -29,7 +29,7 @@ const Item = (item) => {
         <p className="text-center">{item.item.description}</p>
       </div>
       <div className="py-4 flex items-center justify-between p-4 text-sm ">
-        <button className=" px-4 py-2 border text-emerald-600 border-emerald-600 rounded-md text-white">
+        <button className=" px-4 py-2 border text-emerald-600 border-emerald-600 rounded-md">
           Show Details
         </button>
         {item.item.found ? null : (

@@ -7,7 +7,6 @@ const Feedbacks = () => {
     getFeedbacks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(feedbacks);
   return (
     <div className="space-y-4">
       <h1 className="text-2xl text-center font-semibold">Feedbacks</h1>

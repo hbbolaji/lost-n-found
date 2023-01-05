@@ -13,6 +13,18 @@ const Dashboard = () => {
   const [search, setSearch] = useState("");
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const [select, setSelect] = useState("all");
+  const [list, setList] = useState([...dashItems]);
+  const selectCategory = (cat) => {
+    setSelect(cat);
+    if (cat === "all") {
+      setList([...dashItems]);
+    } else if (cat === "missing") {
+      setList([...dashItems].filter((prev) => !prev.found));
+    } else if (cat === "found") {
+      setList([...dashItems].filter((prev) => prev.found));
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -27,8 +39,12 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  useEffect(() => {
+    setList(dashItems);
+  }, [dashItems]);
+
   return (
-    <div>
+    <div className="space-y-6">
       <div className="bg-emerald-600 p-6 text-white flex justify-between items-center">
         <p className="text-lg">
           Welcome, {user ? loggedInUser.fullName : "User"}
@@ -80,13 +96,45 @@ const Dashboard = () => {
           </button>
         </div>
       </div>
+      <div className="space-x-4 px-28">
+        <button
+          onClick={() => selectCategory("all")}
+          className={`${
+            select === "all"
+              ? "bg-emerald-600 text-white"
+              : "border border-emerald-600 text-emerald-600"
+          } rounded px-4 py-2`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => selectCategory("missing")}
+          className={`${
+            select === "missing"
+              ? "bg-emerald-600 text-white"
+              : "border border-emerald-600 text-emerald-600"
+          } rounded px-4 py-2`}
+        >
+          Missing
+        </button>
+        <button
+          onClick={() => selectCategory("found")}
+          className={`${
+            select === "found"
+              ? "bg-emerald-600 text-white"
+              : "border border-emerald-600 text-emerald-600"
+          } rounded px-4 py-2`}
+        >
+          Found
+        </button>
+      </div>
       <div className="flex">
         <div className="flex-1">
           <MissingList
             items={
               search === ""
-                ? dashItems
-                : dashItems.filter((item) => item.name === search) || dashItems
+                ? list
+                : list.filter((item) => item.name === search) || list
             }
           />
         </div>

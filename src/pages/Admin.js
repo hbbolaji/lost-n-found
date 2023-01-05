@@ -11,13 +11,30 @@ const Admin = () => {
   const navigate = useNavigate();
   const { items, getMissing } = useMissing();
   const { logout, user } = useAuth();
+  const [select, setSelect] = useState("all");
+  const [list, setList] = useState([...items]);
+  const selectCategory = (cat) => {
+    setSelect(cat);
+    if (cat === "all") {
+      setList([...items]);
+    } else if (cat === "missing") {
+      setList([...items].filter((prev) => !prev.found));
+    } else if (cat === "found") {
+      setList([...items].filter((prev) => prev.found));
+    }
+  };
 
   useEffect(() => {
     getMissing();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setList(items);
+  }, [items]);
+
   return (
-    <div>
+    <div className="space-y-6">
       <div className="bg-emerald-600 p-6 text-white flex justify-between items-center">
         <p className="text-2xl uppercase font-semibold">Admin</p>
         <div>
@@ -56,17 +73,49 @@ const Admin = () => {
           </button>
         </div>
       </div>
+      <div className="space-x-4 px-28">
+        <button
+          onClick={() => selectCategory("all")}
+          className={`${
+            select === "all"
+              ? "bg-emerald-600 text-white"
+              : "border border-emerald-600 text-emerald-600"
+          } rounded px-4 py-2`}
+        >
+          All
+        </button>
+        <button
+          onClick={() => selectCategory("missing")}
+          className={`${
+            select === "missing"
+              ? "bg-emerald-600 text-white"
+              : "border border-emerald-600 text-emerald-600"
+          } rounded px-4 py-2`}
+        >
+          Missing
+        </button>
+        <button
+          onClick={() => selectCategory("found")}
+          className={`${
+            select === "found"
+              ? "bg-emerald-600 text-white"
+              : "border border-emerald-600 text-emerald-600"
+          } rounded px-4 py-2`}
+        >
+          Found
+        </button>
+      </div>
       <div className="flex">
         <div className="flex-1">
-          <h1 className="px-28 text-lg font-semibold my-4">
+          {/* <h1 className="px-28 text-lg font-semibold my-4">
             Results for Missing Items: 4 items
-          </h1>
+          </h1> */}
           {/* <MissingList items={items} /> */}
           <MissingList
             items={
               search === ""
-                ? items
-                : items.filter((item) => item.name === search) || items
+                ? list
+                : list.filter((item) => item.name === search) || list
             }
           />
         </div>
