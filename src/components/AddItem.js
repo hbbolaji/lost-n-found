@@ -26,8 +26,8 @@ const AddItem = ({ email, close }) => {
       id: uuidv4(),
       founderEmail: email,
       fileUrl: imageUrl,
-      found: false,
-      reportedMissing: false,
+      found: email === "admin@admin.com" ? true : false,
+      reportedMissing: email === "admin@admin.com" ? false : true,
     });
     close();
   };

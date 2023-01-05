@@ -21,6 +21,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     user && getDashItems(user.email);
+    user && checkAdmin(user.email);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
