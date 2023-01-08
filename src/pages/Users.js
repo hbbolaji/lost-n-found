@@ -14,6 +14,9 @@ const Users = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="bg-emerald-600 p-6 text-white flex justify-between items-center">
+        <p className="text-lg cursor-pointer" onClick={() => navigate("/")}>
+          Home
+        </p>
         <p className="text-2xl uppercase font-semibold">Admin</p>
         <div className="space-x-8">
           <button

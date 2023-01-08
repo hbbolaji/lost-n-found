@@ -17,6 +17,9 @@ const Profile = () => {
   return (
     <div>
       <div className="bg-emerald-600 p-6 text-white flex justify-between items-center">
+        <p className="text-lg cursor-pointer" onClick={() => navigate("/")}>
+          Home
+        </p>
         <p className="text-lg">
           Welcome, {user ? loggedInUser.fullName : "User"}
         </p>
