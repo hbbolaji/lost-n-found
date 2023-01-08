@@ -22,6 +22,7 @@ export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState({});
   const [users, setUsers] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState({});
   useEffect(() => {
@@ -115,10 +116,22 @@ const AuthProvider = ({ children }) => {
     await deleteDoc(doc(db, "users", user.id));
   };
 
+  const getUserInfo = (email) => {
+    const q = query(collection(db, "users"), where("email", "==", email));
+    onSnapshot(q, (querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.push({ ...doc.data() });
+      });
+      setUserInfo(data[0]);
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
         users,
+        userInfo,
         loggedInUser,
         user,
         signupWithEmail,
@@ -129,6 +142,7 @@ const AuthProvider = ({ children }) => {
         getUsers,
         deleteUser,
         updateUser,
+        getUserInfo,
       }}
     >
       {loading ? null : children}

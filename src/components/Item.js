@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMissing } from "../context/MissingContext";
+import Modal from "./Modal";
+import Contact from "./Contact";
 
 const Item = (item) => {
+  const [show, setShow] = useState(false);
+  const close = () => {
+    setShow(false);
+  };
   const { setAsFound } = useMissing();
   return (
     <div className="shadow-lg rounded">
@@ -35,13 +41,29 @@ const Item = (item) => {
       <div className="py-4 flex items-center justify-center p-4 text-sm ">
         {item.item.found ? null : (
           <button
-            onClick={() => setAsFound({ ...item.item, found: true })}
+            onClick={() =>
+              item.item.founderEmail === "admin@admin.com"
+                ? setAsFound({ ...item.item, found: true })
+                : setShow(true)
+            }
+            // onClick={() => setAsFound({ ...item.item, found: true })}
             className=" px-4 py-2 bg-emerald-600 rounded-md text-white"
           >
-            Set Item as Recovered
+            {item.item.founderEmail === "admin@admin.com"
+              ? "Resolve"
+              : "Set Item as Recovered"}
           </button>
         )}
       </div>
+      {show ? (
+        <Modal close={close}>
+          <Contact
+            item={item.item}
+            close={close}
+            changeState={() => setAsFound({ ...item.item, found: true })}
+          />
+        </Modal>
+      ) : null}
     </div>
   );
 };
