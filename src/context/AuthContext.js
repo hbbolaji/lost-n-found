@@ -45,7 +45,6 @@ const AuthProvider = ({ children }) => {
         payload.password
       );
       const user = userCredential.user;
-      console.log(user);
       setUser(user);
     } catch (error) {
       console.log(error);

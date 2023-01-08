@@ -20,7 +20,17 @@ const Dashboard = () => {
     if (cat === "all") {
       setList([...dashItems]);
     } else if (cat === "missing") {
-      setList([...dashItems].filter((prev) => !prev.found));
+      setList(
+        [...dashItems].filter(
+          (prev) => !prev.found && prev.founderEmail !== "admin@admin.com"
+        )
+      );
+    } else if (cat === "withAdmin") {
+      setList(
+        [...dashItems].filter(
+          (prev) => !prev.found && prev.founderEmail === "admin@admin.com"
+        )
+      );
     } else if (cat === "found") {
       setList([...dashItems].filter((prev) => prev.found));
     }
@@ -115,7 +125,17 @@ const Dashboard = () => {
               : "border border-emerald-600 text-emerald-600"
           } rounded px-4 py-2`}
         >
-          Missing
+          Lost
+        </button>
+        <button
+          onClick={() => selectCategory("withAdmin")}
+          className={`${
+            select === "withAdmin"
+              ? "bg-emerald-600 text-white"
+              : "border border-emerald-600 text-emerald-600"
+          } rounded px-4 py-2`}
+        >
+          With Admin
         </button>
         <button
           onClick={() => selectCategory("found")}
@@ -125,12 +145,13 @@ const Dashboard = () => {
               : "border border-emerald-600 text-emerald-600"
           } rounded px-4 py-2`}
         >
-          Found
+          Recovered
         </button>
       </div>
       <div className="flex">
         <div className="flex-1">
           <MissingList
+            admin={false}
             items={
               search === ""
                 ? list
@@ -140,6 +161,9 @@ const Dashboard = () => {
         </div>
         {show ? (
           <div className="w-1/4 p-8 space-y-6">
+            <h1 className="text-xl text-center font-semibold">
+              Add Missing Items Here
+            </h1>
             {toggle === "add" && (
               <AddItem email={user.email} close={() => setShow(false)} />
             )}

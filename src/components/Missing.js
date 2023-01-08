@@ -14,7 +14,7 @@ const Missing = () => {
       <div className="flex flex-wrap px-12">
         {items.map((item) => (
           <div key={item.id} className="w-1/4 p-4">
-            <HomeItem item={item} />
+            <HomeItem item={item} dash={false} />
           </div>
         ))}
       </div>

@@ -26,16 +26,13 @@ const AddItem = ({ email, close }) => {
       id: uuidv4(),
       founderEmail: email,
       fileUrl: imageUrl,
-      found: email === "admin@admin.com" ? true : false,
+      found: false,
       reportedMissing: email === "admin@admin.com" ? false : true,
     });
     close();
   };
   return (
     <div className="w-full space-y-6">
-      <h1 className="text-xl text-center font-semibold">
-        Add Missing Items here
-      </h1>
       <Formik
         initialValues={initialValue}
         validationSchema={registerSchema}

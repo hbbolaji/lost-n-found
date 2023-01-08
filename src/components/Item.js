@@ -12,10 +12,14 @@ const Item = (item) => {
           alt={item.item.name}
         />
         <div className="absolute top-0 p-4">
-          {item.item.found ? (
-            <p className="text-white bg-emerald-600 p-2 rounded">found</p>
-          ) : (
-            <p className="text-white bg-red-600 p-2 rounded">missing</p>
+          {item.item.found && (
+            <p className="text-white bg-emerald-600 p-2 rounded">Recovered</p>
+          )}
+          {!item.item.found && item.item.founderEmail === "admin@admin.com" && (
+            <p className="text-white bg-orange-600 p-2 rounded">With Admin</p>
+          )}
+          {!item.item.found && item.item.founderEmail !== "admin@admin.com" && (
+            <p className="text-white bg-red-600 p-2 rounded">Lost</p>
           )}
         </div>
       </div>
@@ -28,16 +32,13 @@ const Item = (item) => {
         <p className="text-center font-semibold">Description</p>
         <p className="text-center">{item.item.description}</p>
       </div>
-      <div className="py-4 flex items-center justify-between p-4 text-sm ">
-        <button className=" px-4 py-2 border text-emerald-600 border-emerald-600 rounded-md">
-          Show Details
-        </button>
+      <div className="py-4 flex items-center justify-center p-4 text-sm ">
         {item.item.found ? null : (
           <button
             onClick={() => setAsFound({ ...item.item, found: true })}
             className=" px-4 py-2 bg-emerald-600 rounded-md text-white"
           >
-            Set Item as Found
+            Set Item as Recovered
           </button>
         )}
       </div>

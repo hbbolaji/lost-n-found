@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   onSnapshot,
   query,
@@ -72,14 +73,12 @@ const MissingProvider = ({ children }) => {
         const prog = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
-        console.log(prog);
         setProgress(prog);
       },
       (err) => console.log(err),
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           setImageUrl(url);
-          console.log(url);
         });
       }
     );
@@ -104,6 +103,10 @@ const MissingProvider = ({ children }) => {
     });
   };
 
+  const deleteItem = async (item) => {
+    await deleteDoc(doc(db, "missings", item.id));
+  };
+
   return (
     <MissingContext.Provider
       value={{
@@ -119,6 +122,7 @@ const MissingProvider = ({ children }) => {
         setAsFound,
         createFeedback,
         getFeedbacks,
+        deleteItem,
       }}
     >
       {children}

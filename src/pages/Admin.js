@@ -18,7 +18,17 @@ const Admin = () => {
     if (cat === "all") {
       setList([...items]);
     } else if (cat === "missing") {
-      setList([...items].filter((prev) => !prev.found));
+      setList(
+        [...items].filter(
+          (prev) => !prev.found && prev.founderEmail !== "admin@admin.com"
+        )
+      );
+    } else if (cat === "withAdmin") {
+      setList(
+        [...items].filter(
+          (prev) => !prev.found && prev.founderEmail === "admin@admin.com"
+        )
+      );
     } else if (cat === "found") {
       setList([...items].filter((prev) => prev.found));
     }
@@ -92,7 +102,17 @@ const Admin = () => {
               : "border border-emerald-600 text-emerald-600"
           } rounded px-4 py-2`}
         >
-          Missing
+          Lost
+        </button>
+        <button
+          onClick={() => selectCategory("withAdmin")}
+          className={`${
+            select === "withAdmin"
+              ? "bg-emerald-600 text-white"
+              : "border border-emerald-600 text-emerald-600"
+          } rounded px-4 py-2`}
+        >
+          With Admin
         </button>
         <button
           onClick={() => selectCategory("found")}
@@ -102,16 +122,13 @@ const Admin = () => {
               : "border border-emerald-600 text-emerald-600"
           } rounded px-4 py-2`}
         >
-          Found
+          Recovered
         </button>
       </div>
       <div className="flex">
         <div className="flex-1">
-          {/* <h1 className="px-28 text-lg font-semibold my-4">
-            Results for Missing Items: 4 items
-          </h1> */}
-          {/* <MissingList items={items} /> */}
           <MissingList
+            admin={true}
             items={
               search === ""
                 ? list
@@ -122,7 +139,7 @@ const Admin = () => {
         {show ? (
           <div className="w-1/4 p-8 space-y-6">
             <h1 className="text-xl text-center font-semibold">
-              Add Missing Items here
+              Register Items here
             </h1>
             <AddItem email={user.email} close={() => setShow(false)} />
           </div>

@@ -7,16 +7,13 @@ import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCDCPZsa8Y6h0Vib5nRUdOFii6WWSKF17E",
-  authDomain: "lost-n-found-tracking-system.firebaseapp.com",
-  projectId: "lost-n-found-tracking-system",
-  storageBucket: "lost-n-found-tracking-system.appspot.com",
-  messagingSenderId: "329562097914",
-  appId: "1:329562097914:web:a869f499c503492e7ee143",
-  measurementId: "G-GW0V7HP0EQ",
+  apiKey: "AIzaSyD317aX1jXHQhECKHvNVDOnRhNElbJWTrI",
+  authDomain: "lost-n-found-tracking-sy-131b4.firebaseapp.com",
+  projectId: "lost-n-found-tracking-sy-131b4",
+  storageBucket: "lost-n-found-tracking-sy-131b4.appspot.com",
+  messagingSenderId: "5352208081",
+  appId: "1:5352208081:web:065f0b7296f38390f377f0",
 };
 
 // Initialize Firebase

@@ -4,7 +4,7 @@ const Features = () => {
   const features = [
     "Report Missing Items",
     "RFID-based Sytem",
-    "Register Found Items",
+    "Register Items with Admin",
     "Search Based System",
   ];
   return (
